@@ -1,0 +1,8 @@
+com/vipac/lecturesservice/services/LezioneService.class
+com/vipac/lecturesservice/controllers/LezioneController.class
+com/vipac/lecturesservice/config/ValidationConfig.class
+com/vipac/lecturesservice/config/PageConfig.class
+com/vipac/lecturesservice/domains/Lezione.class
+com/vipac/lecturesservice/LecturesServiceApplication.class
+com/vipac/lecturesservice/domains/User.class
+com/vipac/lecturesservice/repositories/LezioneRepository.class
