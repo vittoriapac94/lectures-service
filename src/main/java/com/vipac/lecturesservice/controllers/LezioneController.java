@@ -1,6 +1,8 @@
 package com.vipac.lecturesservice.controllers;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import com.vipac.lecturesservice.domains.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,20 +16,33 @@ import com.google.gson.Gson;
 import com.vipac.lecturesservice.domains.Lezione;
 import com.vipac.lecturesservice.services.LezioneService;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 public class LezioneController {
 	
 	@Autowired
 	private LezioneService lezioneService;
-	final static String authServiceURL = "https://localhost:8443/";
+	final static String authServiceURL = "http://localhost:8081/";
 	static final String bookingServiceURL = "https://localhost:10443/";
 	
 
 	@RequestMapping(value = "/getAll", method = RequestMethod.GET)
-	public ModelAndView getAll(String currentUserJSON, String integrityAuth, String esitoPrenotazione) {
+	public ModelAndView getAll(String currentUserJSON, String integrityAuth, String esitoPrenotazione, HttpServletRequest request) {
 		//Verifica checksum
 		String integrityChecksum = org.apache.commons.codec.digest.DigestUtils.sha1Hex(currentUserJSON);
 		ModelAndView modelAndView = new ModelAndView("getAll");
+
+		//getCookie
+		String name = "sessionID";
+		Optional<String> sessionID = Arrays.stream(request.getCookies())
+				.filter(cookie->name.equals(cookie.getName()))
+				.map(Cookie::getValue)
+				.findAny();
+
+		System.out.println("sessionID: "+sessionID.get());
+		System.out.println("integrity: "+integrityAuth);
 
 		if(!integrityAuth.equals(integrityChecksum)){
 			//Checksum non valida - Pagina di errore
